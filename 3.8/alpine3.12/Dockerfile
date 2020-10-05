@@ -7,7 +7,7 @@
 FROM alpine:3.12
 
 # ensure local python is preferred over distribution python
-ENV PATH /usr/local/bin:$PATH
+ENV PATH /usr/local/bin:/usr/bin:$PATH
 
 # http://bugs.python.org/issue19846
 # > At the moment, setting "LANG=C" on a Linux system *fundamentally breaks Python 3*, and that's not OK.
@@ -134,4 +134,12 @@ RUN set -ex; \
 		\) -exec rm -rf '{}' +; \
 	rm -f get-pip.py
 
-CMD ["python3"]
+# symlink to /usr/bin/python
+ENV PATH /usr/bin:$PATH
+RUN ln -s /usr/local/bin/python3 /usr/bin/python;
+RUN alias python=python3;
+RUN ls /usr/bin -al;
+RUN ls -al /usr/local/bin;
+RUN /usr/bin/python --version;
+
+ENTRYPOINT ["/usr/bin/python"]

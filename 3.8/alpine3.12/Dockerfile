@@ -17,6 +17,9 @@ ENV LANG C.UTF-8
 # other runtime dependencies for Python are installed later
 RUN apk add --no-cache ca-certificates
 
+# install libstdc++
+RUN apk add --no-cache libstdc++
+
 ENV GPG_KEY E3FF2839C048B25C084DEBE9B26995E310250568
 ENV PYTHON_VERSION 3.8.6
 
@@ -138,8 +141,6 @@ RUN set -ex; \
 ENV PATH /usr/bin:$PATH
 RUN ln -s /usr/local/bin/python3 /usr/bin/python;
 RUN alias python=python3;
-RUN ls /usr/bin -al;
-RUN ls -al /usr/local/bin;
 RUN /usr/bin/python --version;
 
 ENTRYPOINT ["/usr/bin/python"]
